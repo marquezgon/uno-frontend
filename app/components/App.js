@@ -1,20 +1,31 @@
 import React from 'react';
-import img from '../assets/images/react_logo_512x512.png';
+import axios from 'axios';
 
-const App = () => {
-  return (
-    <div>
-      <h2 id="heading">Hello ReactJS</h2>
-      <img
-        className="image"
-        style={{ margin: '0.5em' }}
-        height="40"
-        width="40"
-        src={img}
-        alt="React Logo"
-      />
-    </div>
-  );
-};
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { data: [] };
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:8000/ips')
+      .then(({ data }) => {
+        this.setState({ data });
+      });
+  }
+
+  render() {
+    const list = this.state.data.map(ip => <li>{ip}</li>);
+
+    return (
+      <div>
+        <ul>
+          {list}
+        </ul>
+      </div>
+    );
+  }
+}
 
 export default App;
